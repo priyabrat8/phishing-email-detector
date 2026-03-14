@@ -1,0 +1,37 @@
+# Byte-code files
+*.pyc
+__pycache__/
+# Compiled extensions (e.g. .so, .dll)
+*.pyd
+*.bin
+
+# Environment files
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+
+# Editor/IDE-specific files and directories
+# VS Code
+.vscode/
+# PyCharm/IntelliJ
+.idea/
+
+# Operating System files
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# build artifacts
+dist/
+build/
+*.egg-info/
+.coverage
+
+# Miscellaneous
+# Logs and database files
+*.log
+*.sqlite3
+/db.sqlite3
