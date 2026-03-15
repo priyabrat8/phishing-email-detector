@@ -37,4 +37,4 @@ build/
 /db.sqlite3
 
 # dataset
-dataset/*
+dataset/
