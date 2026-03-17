@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from .domain_checker import check_domain_age
 from .forms import EmailPostForm
 from .models import ScanResult
 from .ai_model import predict_email
 from .url_checker import url_checker
+from .sender_validation import sender_validation
 
 # Create your views here.
 def home(request):
@@ -36,11 +36,10 @@ def scan_email(request):
                     result = "Safe"
 
                 # domain checker for sender's email
-                is_suspicious_domain, domain_age = check_domain_age(email_sender.split('@')[1])
-                if is_suspicious_domain:
-                    score += 15
-                    reasons.append(f"Sender's Domain very new ({domain_age} days old)")
-                
+                sender_score, sender_reasons = sender_validation(email_sender)
+                score += sender_score
+                reasons.extend(sender_reasons)
+
                 # email body url domain checker
                 urls = url_checker(email_text)
 
