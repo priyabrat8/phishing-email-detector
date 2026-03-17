@@ -1,12 +1,29 @@
 import whois
 from datetime import datetime
+from .models import PhishingURL
+from urllib.parse import urlparse
 
 
-def check_domain_repuation(domain):
-    pass
+def check_domain_reputation(domain):
+    if "://" in domain:
+        domain = urlparse(domain).netloc.lower()
+    else:
+        domain = domain.lower()
+
+    # Remove port
+    domain = domain.split(':')[0]
+    parts = domain.split('.')
+    
+    for i in range(len(parts) - 1):
+        test_domain = ".".join(parts[i:])
+        
+        if PhishingURL.objects.filter(domain=test_domain).exists():
+            return True # 
+
+    return False 
 
 def check_domain_age(domain):
-
+    # format -> Only domain , no path and port
     try:
         domain_info = whois.whois(domain)
 

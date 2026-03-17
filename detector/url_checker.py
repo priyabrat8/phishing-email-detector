@@ -1,6 +1,6 @@
 import re
 from urllib.parse import urlparse
-from .domain_checker import check_domain_age
+from .domain_checker import check_domain_age, check_domain_reputation
 
 def normalize_obfuscation(text):
     replacements = {
@@ -49,10 +49,11 @@ def url_checker(text):
             score += 15
             reasons.append(f"URL: {url} uses HTTP instead of HTTPS.") 
         
+        domain = parsed.netloc.lower()
+        domain = domain.split(':')[0]
+
         # url domain age checker
-        domain = url.split("/")[2]
         is_suspicious_domain, domain_age = check_domain_age(domain)
-        
         if is_suspicious_domain:
             score += 15
             reasons.append(f"URL domain: {domain} is very new ({domain_age} days old).")
@@ -71,5 +72,11 @@ def url_checker(text):
         if len(domain) > 30:
             score += 5
             reasons.append("Very long domain")
+        
+        # check for domain in known phishing database
+        if check_domain_reputation(domain):
+            score += 25
+            reasons.append(f"\"{domain}\" is found in phishing database.")
+
 
     return {'urls': list(set(urls)), 'reasons': reasons, 'score': score}
