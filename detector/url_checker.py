@@ -1,4 +1,4 @@
-import re
+import re, ipaddress
 from urllib.parse import urlparse
 from .domain_checker import check_domain_age, check_domain_reputation
 
@@ -46,7 +46,7 @@ def url_checker(text):
             break
         
         if parsed.scheme == 'http':
-            score += 15
+            score += 5
             reasons.append(f"URL: {url} uses HTTP instead of HTTPS.") 
         
         domain = parsed.netloc.lower()
@@ -54,22 +54,28 @@ def url_checker(text):
 
         # url domain age checker
         is_suspicious_domain, domain_age = check_domain_age(domain)
-        if is_suspicious_domain:
-            score += 15
-            reasons.append(f"URL domain: {domain} is very new ({domain_age} days old).")
-        
-        # check IP
-        if re.match(r'\d+\.\d+\.\d+\.\d+', domain):
+        try:
+            if is_suspicious_domain:
+                score += 15
+                reasons.append(f"URL domain: {domain} is very new ({domain_age} days old).")
+        except:
+            pass
+
+        # check if IP Address is used instead of domain
+        try:
+            ipaddress.ip_address(domain)
             score += 20
-            reasons.append("IP address used")
+            reasons.append("IP address used instead of domain")
+        except:
+            pass
 
         # hyphen phishing domain
-        if "-" in domain:
+        if domain.count("-") >= 2:
             score += 5
             reasons.append("Hyphenated domain")
 
         # very long domain
-        if len(domain) > 30:
+        if len(domain) > 40:
             score += 5
             reasons.append("Very long domain")
         
@@ -77,6 +83,15 @@ def url_checker(text):
         if check_domain_reputation(domain):
             score += 25
             reasons.append(f"\"{domain}\" is found in phishing database.")
-
-
+        
+        # check for @ in URL
+        if "@" in url:
+            score += 25
+            reasons.append("URL contains '@' symbol (possible redirect trick)")
+        
+        # check for multiple subdomains
+        if domain.count('.') > 3:
+            score += 10
+            reasons.append("Too many subdomains")
+        
     return {'urls': list(set(urls)), 'reasons': reasons, 'score': score}
