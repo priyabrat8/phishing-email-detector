@@ -6,7 +6,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
-from scipy.sparse import hstack
 
 
 # -------------------------
@@ -24,88 +23,52 @@ def normalize_text(text):
 
 
 # -------------------------
-# CLEAN TEXT + FEATURES
+# CLEAN TEXT
 # -------------------------
 
 def clean_text(text):
     text = str(text).lower()
     text = normalize_text(text)
 
-    # Count BEFORE replacing
-    url_count = len(re.findall(r"http\S+", text))
-    email_count = len(re.findall(r"\S+@\S+", text))
-
-    # Replace with tokens
     text = re.sub(r"http\S+", " URL_TOKEN ", text)
     text = re.sub(r"\S+@\S+", " EMAIL_TOKEN ", text)
 
-    # Keep ! and ?
     text = re.sub(r"[^a-zA-Z0-9!? ]", " ", text)
-
-    # Normalize repeated chars
     text = re.sub(r"(.)\1+", r"\1", text)
 
     text = re.sub(r"\s+", " ", text).strip()
 
-    return text, url_count, email_count
+    return text
 
 
 # -------------------------
-# LOAD ENRON
+# LOAD DATA
 # -------------------------
 
 print("Loading datasets...")
 
+# ENRON
 enron = pd.read_csv("enron_spam_data.csv")
-
 enron = enron[["Message", "Spam/Ham"]]
-
-enron["Spam/Ham"] = enron["Spam/Ham"].map({
-    "ham": 0,
-    "spam": 1
-})
-
+enron["Spam/Ham"] = enron["Spam/Ham"].map({"ham": 0, "spam": 1})
 enron.columns = ["text", "label"]
 
-
-# -------------------------
-# LOAD CEAS (ROBUST HANDLING)
-# -------------------------
-
+# CEAS
 ceas = pd.read_csv("CEAS_08.csv")
 
-print("CEAS columns:", ceas.columns)
-
-# Try to detect correct text column
-text_col = None
-for col in ceas.columns:
-    if col.lower() in ["body", "text", "email", "content"]:
-        text_col = col
-        break
-
-if text_col is None:
-    text_col = ceas.columns[0]  # fallback
-
-label_col = None
-for col in ceas.columns:
-    if "label" in col.lower():
-        label_col = col
-        break
-
-if label_col is None:
-    label_col = ceas.columns[1]  # fallback
+# Auto-detect columns
+text_col = ceas.columns[0]
+label_col = ceas.columns[1]
 
 ceas = ceas[[text_col, label_col]]
 ceas.columns = ["text", "label"]
 
-# Ensure numeric labels
 ceas["label"] = pd.to_numeric(ceas["label"], errors="coerce")
-
 ceas = ceas.dropna(subset=["label"])
 
 
 # -------------------------
-# MERGE DATA
+# MERGE
 # -------------------------
 
 data = pd.concat([enron, ceas], ignore_index=True)
@@ -117,16 +80,12 @@ print("Total samples:", len(data))
 
 
 # -------------------------
-# CLEAN + FEATURE EXTRACTION
+# CLEAN
 # -------------------------
 
-cleaned = data["text"].apply(clean_text)
+data["text"] = data["text"].apply(clean_text)
 
-data["clean_text"] = cleaned.apply(lambda x: x[0])
-data["url_count"] = cleaned.apply(lambda x: x[1])
-data["email_count"] = cleaned.apply(lambda x: x[2])
-
-texts = data["clean_text"]
+texts = data["text"]
 labels = data["label"]
 
 
@@ -143,15 +102,11 @@ vectorizer = TfidfVectorizer(
     max_df=0.9
 )
 
-X_text = vectorizer.fit_transform(texts)
-
-meta = data[["url_count", "email_count"]]
-
-X = hstack([X_text, meta])
+X = vectorizer.fit_transform(texts)
 
 
 # -------------------------
-# TRAIN / TEST SPLIT
+# SPLIT
 # -------------------------
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -160,7 +115,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 # -------------------------
-# TRAIN MODEL
+# TRAIN
 # -------------------------
 
 print("Training model...")
@@ -174,7 +129,7 @@ model.fit(X_train, y_train)
 
 
 # -------------------------
-# EVALUATION
+# EVALUATE
 # -------------------------
 
 probs = model.predict_proba(X_test)[:, 1]
@@ -188,7 +143,7 @@ print(classification_report(y_test, preds))
 
 
 # -------------------------
-# SAVE MODEL
+# SAVE
 # -------------------------
 
 joblib.dump(model, "email_model.pkl")
