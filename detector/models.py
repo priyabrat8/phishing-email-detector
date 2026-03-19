@@ -9,14 +9,12 @@ class ScanResult(models.Model):
         default=uuid.uuid4, 
         editable=False
     )
-    email_text = models.TextField()
-    email_sender = models.EmailField()
-    result = models.CharField(max_length=50)
-    risk_score = models.FloatField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, unique=True, default="safe")
+    count = models.IntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.result
+        return "Scan Statistics"
 
 class PhishingURL(models.Model):
     id = models.UUIDField(
