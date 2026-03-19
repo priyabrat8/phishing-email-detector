@@ -35,6 +35,3 @@ build/
 *.log
 *.sqlite3
 /db.sqlite3
-
-# dataset
-dataset/
