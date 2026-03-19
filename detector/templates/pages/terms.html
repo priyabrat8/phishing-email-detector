@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<main class="flex-grow bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 font-sans min-h-screen">
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    
+    <div class="bg-gray-900 px-8 py-10 text-white text-center">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Legal & Privacy</h1>
+      <p class="mt-3 text-gray-400 text-sm tracking-widest uppercase font-semibold">
+        Terms of Service and Privacy Policy
+      </p>
+    </div>
+
+    <div class="p-8 sm:p-12 text-gray-700 space-y-10">
+      
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          1. Zero Data Retention Policy
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            The Phishing Detector prioritizes your privacy. We operate on a strict <strong>Zero Data Retention</strong> model regarding your scanned content.
+          </p>
+          <ul class="list-disc pl-5 space-y-2 text-gray-600">
+            <li><strong>No Storage:</strong> We do not log, store, database, or archive the email bodies, sender addresses, or URLs you submit for scanning.</li>
+            <li><strong>Ephemeral Processing:</strong> Data is processed in server memory (RAM) solely for the duration of the scan and is instantly discarded once the risk score is generated.</li>
+            <li><strong>Analytics:</strong> We may record anonymous, aggregated metadata (such as the total number of safe vs. unsafe scans performed globally) to display system analytics, but this data cannot be tied back to any specific user or specific email content.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          2. Acceptable Use & Unauthorized Access
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            This service is provided for educational and defensive security purposes. Any attempt to abuse, exploit, or disrupt this infrastructure is strictly prohibited.
+          </p>
+          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
+            <p class="text-sm text-red-800 font-semibold mb-2">The following actions will be considered hostile and may be reported to law enforcement:</p>
+            <ul class="list-disc pl-5 space-y-1 text-sm text-red-700">
+              <li>Attempting to bypass security controls, reverse-engineer the machine learning models, or execute code injections (including XSS or SQLi).</li>
+              <li>Performing Denial of Service (DoS/DDoS) attacks or deliberately flooding the scanner with automated, high-volume API requests.</li>
+              <li>Using the platform to validate or refine the effectiveness of your own malicious phishing campaigns.</li>
+            </ul>
+          </div>
+          <p class="text-sm text-gray-500 font-medium">
+            Violations of these terms are subject to prosecution under applicable cyber laws, including the Information Technology Act, 2000.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+          3. Disclaimer of Warranties
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            The Phishing Detector utilizes machine learning algorithms that calculate probabilities. It is not infallible. 
+          </p>
+          <ul class="list-disc pl-5 space-y-2 text-gray-600">
+            <li><strong>No Guarantees:</strong> The service is provided on an "AS IS" and "AS AVAILABLE" basis. We do not guarantee that the scanner will catch 100% of malicious emails (False Negatives), nor do we guarantee that safe emails will not occasionally be flagged (False Positives).</li>
+            <li><strong>Limitation of Liability:</strong> Under no circumstances shall Boss HD or the developers of this tool be held liable for any data loss, financial damages, compromised accounts, or security breaches resulting from reliance on the scan results. The ultimate responsibility for network and account security rests with the user.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2 mb-3">4. Governing Law</h2>
+        <p class="text-gray-600 leading-relaxed">
+          These terms and conditions are governed by and construed in accordance with the laws of India. Any disputes relating to these terms will be subject to the exclusive jurisdiction of the local courts.
+        </p>
+      </section>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

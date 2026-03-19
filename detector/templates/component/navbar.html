@@ -1,0 +1,36 @@
+<nav class="bg-white border-b border-gray-200 shadow-sm font-sans">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-2xl font-bold text-blue-600 tracking-tight flex items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          Pro<span class="text-gray-800">Scanner</span>
+        </a>
+      </div>
+
+      <div class="hidden md:flex space-x-8">
+        <a href="/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Home</a>
+        <a href="/scan/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200 border border-transparent hover:border-blue-100">Scan</a>
+        <a href="/contact/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Contact</a>
+      </div>
+
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-btn" type="button" class="text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-2 transition-colors">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-inner">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="/" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-md text-base font-medium transition-colors">Home</a>
+      <a href="/scan/" class="block text-blue-700 bg-blue-50 px-3 py-2 rounded-md text-base font-medium border border-blue-100">Scan</a>
+      <a href="/contact/" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-md text-base font-medium transition-colors">Contact</a>
+    </div>
+  </div>
+</nav>

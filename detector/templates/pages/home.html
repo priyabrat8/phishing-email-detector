@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <main class="flex-grow bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-7xl mx-auto">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      
+      <div class="space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold tracking-wide">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          System Active
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+          Phishing Detector
+        </h1>
+        
+        <p class="text-lg text-gray-600 leading-relaxed max-w-lg">
+          Welcome to the Phishing Detector! Protect your network and data by identifying malicious links and social engineering attacks instantly.
+        </p>
+        
+        <p class="text-md text-gray-500 font-medium">
+          To scan an email for potential phishing threats, please click the button below:
+        </p>
+        
+        <div class="pt-4">
+          <a href="/scan/" class="inline-flex items-center justify-center px-8 py-3.5 border border-transparent text-base font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200 gap-2 transform hover:-translate-y-0.5">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            Scan an Email
+          </a>
+        </div>
+      </div>
+
+     <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 flex flex-col items-center justify-center transform transition duration-500 hover:scale-[1.02]">
+        <h2 class="text-xl font-bold text-gray-800 mb-2">System Analytics</h2>
+        <p class="text-sm text-gray-500 mb-8">Overview of all {{ total_scans }} emails processed</p>
+        
+        <div class="relative w-56 h-56 rounded-full flex items-center justify-center shadow-inner" 
+             style="background: conic-gradient(#ef4444 0% {{ unsafe_percentage }}%, #22c55e {{ unsafe_percentage }}% 100%);">
+          
+          <div class="w-40 h-40 bg-white rounded-full flex flex-col items-center justify-center shadow-sm z-10">
+            <span class="text-3xl font-extrabold text-gray-800">{{ safe_percentage }}%</span>
+            <span class="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-1">Safe</span>
+          </div>
+          
+        </div>
+
+        <div class="mt-8 grid grid-cols-2 gap-6 w-full max-w-xs">
+          
+          <div class="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
+            <span class="w-3.5 h-3.5 rounded-full bg-green-500 shadow-sm"></span>
+            <div class="flex flex-col">
+              <span class="text-sm font-black text-gray-800">{{ safe_count }}</span>
+              <span class="text-[10px] text-gray-500 uppercase font-semibold">Clean</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
+            <span class="w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+            <div class="flex flex-col">
+              <span class="text-sm font-black text-gray-800">{{ unsafe_count }}</span>
+              <span class="text-[10px] text-gray-500 uppercase font-semibold">Threats</span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}
