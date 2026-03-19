@@ -37,14 +37,15 @@ def scan_email(request):
 
                 # domain checker for sender's email
                 sender_score, sender_reasons = sender_validation(email_sender)
-                score += sender_score
-                reasons.extend(sender_reasons)
+                if sender_score >0 and sender_reasons:
+                    score += sender_score
+                    reasons.extend(sender_reasons)
 
                 # email body url domain checker
                 urls = url_checker(email_text)
-
-                score += urls['score']
-                reasons.extend(urls['reasons'])
+                if isinstance(urls, dict) and 'score' in urls:
+                    score += urls['score']
+                    reasons.extend(urls.get('reasons', []))
                 
                 if score > 100:
                     score = 100
