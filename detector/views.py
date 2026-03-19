@@ -7,7 +7,33 @@ from .sender_validation import sender_validation
 
 # Create your views here.
 def home(request):
-    return render(request, 'pages/home.html')
+    safe, created_safe = ScanResult.objects.get_or_create(status="safe")
+    phishing, created_phishing = ScanResult.objects.get_or_create(status="phishing")
+    safe_count , phishing_count = safe.count, phishing.count
+    total_scans = safe_count + phishing_count
+    
+    if total_scans > 0:
+        unsafe_percentage = int((phishing_count / total_scans) * 100)
+        safe_percentage = 100 - unsafe_percentage
+    else:
+        safe_percentage = 100
+        unsafe_percentage = 0
+        total_scans = 0
+    
+    return render(request, 'pages/home.html', {
+        "safe_count": safe_count,
+        "unsafe_count": phishing_count,
+        "total_scans": total_scans,
+        "safe_percentage": safe_percentage,
+        "unsafe_percentage": unsafe_percentage
+
+    })
+
+def contact(request):
+    return render(request, 'pages/contact.html')
+
+def terms(request):
+    return render(request, 'pages/terms.html')
 
 def scan_email(request):
     result = None
@@ -15,6 +41,8 @@ def scan_email(request):
     message = None
     reasons = []
     form = EmailPostForm()
+    safe, _ = ScanResult.objects.get_or_create(status="safe")
+    phishing, _ = ScanResult.objects.get_or_create(status="phishing")
 
     if request.method == "POST":
         form = EmailPostForm(request.POST)
@@ -55,12 +83,12 @@ def scan_email(request):
                     reasons.append("Overall risk score is high.")
 
                 # save scan history
-                ScanResult.objects.create(
-                    email_text=email_text,
-                    email_sender=email_sender,
-                    result=result,
-                    risk_score=score
-                )
+                if result == "Safe":    
+                    safe.count += 1
+                    safe.save()
+                else:
+                    phishing.count += 1
+                    phishing.save()
 
             except Exception as e:
                 message = "Error in analyzing email."
