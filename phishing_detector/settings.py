@@ -26,11 +26,11 @@ TURNSTILE_SECRET_KEY = os.getenv('TURNSTILE_SECRET_KEY', '1x00000000000000000000
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fsp*h90ip&d$28xm#4#7zcn&kakw_lnzy6saj2kr)u)-4khc%d'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-dev-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
 # Application definition
 
