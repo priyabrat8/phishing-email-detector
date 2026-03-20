@@ -140,6 +140,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'theme', 'static'), 
+]
+
 # THE FIX: Tell Django exactly where to put the files for production
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
