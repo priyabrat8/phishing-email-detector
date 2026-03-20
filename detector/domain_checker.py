@@ -18,7 +18,7 @@ def check_domain_reputation(domain):
         test_domain = ".".join(parts[i:])
         
         if PhishingURL.objects.filter(domain=test_domain).exists():
-            return True # 
+            return True 
 
     return False 
 
