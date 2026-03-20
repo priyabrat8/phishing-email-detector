@@ -42,7 +42,7 @@ def url_checker(text):
             urls.append(url)
         else:
             reasons.append(f"URL: {url} is malformed.")
-            score += 10
+            score += 20
             break
         
         if parsed.scheme == 'http':
@@ -56,7 +56,7 @@ def url_checker(text):
         is_suspicious_domain, domain_age = check_domain_age(domain)
         try:
             if is_suspicious_domain:
-                score += 15
+                score += 5
                 reasons.append(f"URL domain: {domain} is very new ({domain_age} days old).")
         except:
             pass
@@ -64,7 +64,7 @@ def url_checker(text):
         # check if IP Address is used instead of domain
         try:
             ipaddress.ip_address(domain)
-            score += 20
+            score += 25
             reasons.append("IP address used instead of domain")
         except:
             pass
@@ -72,7 +72,7 @@ def url_checker(text):
         # hyphen phishing domain
         if domain.count("-") >= 2:
             score += 5
-            reasons.append("Hyphenated domain")
+            reasons.append("Too much hyphen in domain")
 
         # very long domain
         if len(domain) > 40:
@@ -86,12 +86,12 @@ def url_checker(text):
         
         # check for @ in URL
         if "@" in url:
-            score += 25
+            score += 5
             reasons.append("URL contains '@' symbol (possible redirect trick)")
         
         # check for multiple subdomains
         if domain.count('.') > 3:
-            score += 10
+            score += 5
             reasons.append("Too many subdomains")
         
     return {'urls': list(set(urls)), 'reasons': reasons, 'score': score}

@@ -7,13 +7,13 @@ def sender_validation(email_sender):
         is_suspicious_domain, domain_age = check_domain_age(email_sender.split('@')[1])
 
         if is_suspicious_domain:
-            score += 15
+            score += 5
             reasons.append(f"Sender's Domain very new ({domain_age} days old)")
     except:
         pass
     
     if check_domain_reputation(email_sender.split('@')[1]):
-        score += 10
+        score += 25
         reasons.append("Sender's email domain has a poor reputation")
     
     return score, reasons

@@ -40,6 +40,8 @@ def terms(request):
 
 @ratelimit(key='ip', rate='4/m', block=True)
 def scan_email(request):
+    max_url_score = 75
+    max_sender_score = 30
     result = None
     score = 0
     message = None
@@ -64,55 +66,56 @@ def scan_email(request):
                 }
             )
             cf_result = cf_request.json()
-            form = EmailPostForm(request.POST)    
+            if cf_result.get('success'):
+                form = EmailPostForm(request.POST)    
 
-            # validate input
-            if form.is_valid():
-                try:
-                    cd = form.cleaned_data
-                    email_text = cd['email_text'].strip()
-                    email_sender = cd['email_sender'].strip()
-                    prediction, prob = predict_email(email_text)
+                # validate input
+                if form.is_valid():
+                    try:
+                        cd = form.cleaned_data
+                        email_text = cd['email_text'].strip()
+                        email_sender = cd['email_sender'].strip()
+                        prediction, prob = predict_email(email_text)
 
-                    score += round(prob * 100, 2)
+                        score += round(prob * 100, 2) * 0.4
 
-                    if prediction == 1:
-                        reasons.append("Phishing language detected")
-                        result = "Phishing"
-                    else:                    
-                        result = "Safe"
+                        if prediction == 1:
+                            reasons.append("Phishing language detected")
+                            result = "Phishing"
+                        else:                    
+                            result = "Safe"
 
-                    # domain checker for sender's email
-                    sender_score, sender_reasons = sender_validation(email_sender)
-                    if sender_score >0 and sender_reasons:
-                        score += sender_score
-                        reasons.extend(sender_reasons)
+                        # domain checker for sender's email
+                        sender_score, sender_reasons = sender_validation(email_sender)
+                        if sender_score >0 and sender_reasons:
+                            score += (sender_score/ max_sender_score) * 0.2
+                            reasons.extend(sender_reasons)
 
-                    # email body url domain checker
-                    urls = url_checker(email_text)
-                    if isinstance(urls, dict) and 'score' in urls:
-                        score += urls['score']
-                        reasons.extend(urls.get('reasons', []))
-                    
-                    if score > 100:
-                        score = 100
-                    
-                    if score >= 60 and result != "Phishing":
-                        result = "Suspicious"
-                        reasons.append("Overall risk score is high.")
+                        # email body url domain checker
+                        urls = url_checker(email_text)
+                        if isinstance(urls, dict) and 'score' in urls:
+                            score += (urls['score'] / max_url_score) * 0.4
+                            reasons.extend(urls.get('reasons', []))
+                        
+                        score = min(score, 100)
+                        
+                        if score >= 50 and result != "Phishing":
+                            result = "Phishing"
 
-                    # save scan history
-                    if result == "Safe":    
-                        safe.count += 1
-                        safe.save()
-                    else:
-                        phishing.count += 1
-                        phishing.save()
+                        # save scan history
+                        if result == "Safe":    
+                            safe.count += 1
+                            safe.save()
+                        else:
+                            phishing.count += 1
+                            phishing.save()
 
-                except Exception as e:
-                    message = "Error in analyzing email."
+                    except Exception as e:
+                        message = "Error in analyzing email."
+                else:
+                    message = "Please enter a valid email address and message."
             else:
-                message = "Please enter a valid email address and message."
+                message = "Bot verification failed. Please try again."
             
     return render(
         request,
