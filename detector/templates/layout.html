@@ -17,6 +17,17 @@
 
 <script src="{% static 'detector/js/script.js' %}" ></script>  
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> 
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<script>
+     document.addEventListener("DOMContentLoaded", function() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  });
+</script>
 </body>
 
 </html>
