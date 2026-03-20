@@ -25,7 +25,6 @@ venv.bak/
 Thumbs.db # Windows
 
 # build artifacts
-dist/
 build/
 *.egg-info/
 .coverage
