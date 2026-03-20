@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing Email Detector</title>
+    <title>Pro Scanner</title>
     {% tailwind_css %}
 </head>
 <body>
@@ -14,7 +14,8 @@
     {% endblock %}
     {% include "component/footer.html" %}
 
-<script src="{% static 'detector/js/script.js' %}" ></script>   
+<script src="{% static 'detector/js/script.js' %}" ></script>  
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> 
 </body>
 
 </html>

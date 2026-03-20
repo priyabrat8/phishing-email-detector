@@ -40,6 +40,10 @@
         <div class="space-y-5">
           {{ form.email_sender.as_field_group }}
           {{ form.email_text.as_field_group }}
+         <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}" data-theme="light"></div>
+        </div>
+        <div style="display:none; visibility:hidden;">
+        <input type="text" name="bot_catcher" value="" tabindex="-1" autocomplete="off">
         </div>
 
         <hr class="border-gray-100 my-6">
