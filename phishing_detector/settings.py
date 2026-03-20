@@ -150,6 +150,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Ensure WhiteNoise is configured to compress and serve these files
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
