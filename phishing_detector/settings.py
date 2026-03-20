@@ -139,3 +139,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# THE FIX: Tell Django exactly where to put the files for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Ensure WhiteNoise is configured to compress and serve these files
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
