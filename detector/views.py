@@ -40,8 +40,6 @@ def terms(request):
 
 @ratelimit(key='ip', rate='4/m', block=True)
 def scan_email(request):
-    max_url_score = 75
-    max_sender_score = 30
     result = None
     score = 0
     message = None
@@ -49,6 +47,7 @@ def scan_email(request):
     form = EmailPostForm()
     safe, _ = ScanResult.objects.get_or_create(status="safe")
     phishing, _ = ScanResult.objects.get_or_create(status="phishing")
+    suspicious, _ = ScanResult.objects.get_or_create(status="suspicious")
 
     if request.method == "POST":
         if request.POST.get('bot_catcher'):
@@ -77,35 +76,41 @@ def scan_email(request):
                         email_sender = cd['email_sender'].strip()
                         prediction, prob = predict_email(email_text)
 
-                        score += round(prob * 100, 2) * 0.4
+                        score += round(prob * 100, 2) * 0.60
 
                         if prediction == 1:
                             reasons.append("Phishing language detected")
-                            result = "Phishing"
-                        else:                    
-                            result = "Safe"
 
                         # domain checker for sender's email
                         sender_score, sender_reasons = sender_validation(email_sender)
                         if sender_score >0 and sender_reasons:
-                            score += (sender_score/ max_sender_score) * 0.2
+                            score += (sender_score) * 0.10
                             reasons.extend(sender_reasons)
 
                         # email body url domain checker
                         urls = url_checker(email_text)
                         if isinstance(urls, dict) and 'score' in urls:
-                            score += (urls['score'] / max_url_score) * 0.4
+                            score += (urls['score']) * 0.30
                             reasons.extend(urls.get('reasons', []))
                         
+                        score = round(score, 2)
                         score = min(score, 100)
+
                         
-                        if score >= 50 and result != "Phishing":
+                        if score >= 40 and score <= 50:
+                            result = "Suspicious"
+                        elif score >= 51:
                             result = "Phishing"
+                        else:
+                            result = "Safe"
 
                         # save scan history
                         if result == "Safe":    
                             safe.count += 1
                             safe.save()
+                        elif result == "Suspicious":
+                            suspicious.count += 1
+                            suspicious.save()
                         else:
                             phishing.count += 1
                             phishing.save()
