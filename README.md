@@ -1,20 +1,20 @@
-# 🚨 PhishGuard — Intelligent Phishing Detection System
+# Scanner HD — Phishing Detection System
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Django](https://img.shields.io/badge/Django-Backend-green)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Frontend-38B2AC)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> A powerful phishing detection system combining **Machine Learning (NLP)**, **URL heuristics**, and **domain intelligence** to detect malicious emails and links.
+> A powerful phishing detection system combining **Machine Learning (NLP)**, **URL threat analysis**, and **domain reputation analysis** to detect malicious emails and links.
 
 ---
 
 ## ✨ Features
 
 - 🔍 NLP-based phishing detection (TF-IDF)
-- 🔗 Advanced URL heuristic analysis
-- 🛡️ Domain reputation & intelligence checks
+- 🔗 Advanced URL threat analysis
+- 🛡️ Domain reputation and risk assessment
 - ⚡ Real-time phishing risk scoring
 - 🔒 Anti-abuse protection (CAPTCHA, rate limiting)
 - 🎯 Clean UI with Tailwind CSS
@@ -24,7 +24,7 @@
 ## 🧠 System Architecture
 
 ```
-Input (Email / Text)
+Input (Email)
         │
         ▼
 [ Content Analysis (TF-IDF) ]
@@ -33,7 +33,7 @@ Input (Email / Text)
 [ URL Extraction Engine ]
         │
         ▼
-[ Heuristic + Reputation Checks ]
+[ Threat Analysis + Reputation Validation ]
         │
         ▼
 [ Risk Scoring Engine ]
@@ -87,6 +87,7 @@ Input (Email / Text)
 - Scikit-learn
 
 ### Frontend
+- HTML
 - Tailwind CSS
 
 ### Databse
